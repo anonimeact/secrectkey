@@ -8,10 +8,7 @@ class EncryptDecrypt {
   /// The original file remains unchanged.
   /// The encryption uses SecureCompressor from secure_compressor package.
   /// The output file is named <original_name>_enc.txt in the current directory.
-  static Future<void> encryptFile(List<String> args) async {
-    final path = args[1];
-    final key = args[2];
-
+  static Future<void> encryptFile(String path, String password) async {
     final file = File(path);
     if (!file.existsSync()) {
       print("❌ File not found: $path");
@@ -19,7 +16,7 @@ class EncryptDecrypt {
     }
 
     final data = await file.readAsString();
-    final encrypted = SecureCompressor.encrypt(data, key);
+    final encrypted = SecureCompressor.encrypt(data, password);
     final filename = path.split(Platform.pathSeparator).last;
     final extIndex = filename.lastIndexOf(".");
     final base = extIndex == -1 ? filename : filename.substring(0, extIndex);
@@ -36,10 +33,7 @@ class EncryptDecrypt {
   /// The decryption uses SecureCompressor from secure_compressor package.
   /// The output file is named <original_name>_dec.txt in the current directory.
 
-  static Future<void> decryptFile(List<String> args) async {
-    final path = args[1];
-    final key = args[2];
-
+  static Future<void> decryptFile(String path, String password) async {
     final file = File(path);
     if (!file.existsSync()) {
       print("❌ File not found: $path");
@@ -48,7 +42,7 @@ class EncryptDecrypt {
 
     final encrypted = await file.readAsString();
     try {
-      final decrypted = SecureCompressor.decrypt(encrypted, key);
+      final decrypted = SecureCompressor.decrypt(encrypted, password);
       // Ambil nama file tanpa ekstensi
       final filename = path.split(Platform.pathSeparator).last;
       final base = filename.contains(".") ? filename.substring(0, filename.lastIndexOf(".")) : filename;

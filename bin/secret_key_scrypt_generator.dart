@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:args/args.dart';
 import 'package:secret_key_scrypt_generator/encrypt_decrypt.dart';
 import 'package:secret_key_scrypt_generator/obfuscator.dart';
 
@@ -13,31 +14,54 @@ Future<void> main(List<String> args) async {
     printUsage();
     exit(1);
   }
-  final command = args[0];
+  final parser = ArgParser();
+  parser.addCommand('generate')
+    ..addOption('key', abbr: 'k', help: 'Obfuscate a secret key')
+    ..addOption('function', abbr: 'f', help: 'Function name to generate');
+  parser.addCommand('encrypt')
+    ..addOption('file', abbr: 'f', help: 'File to encrypt')
+    ..addOption('password', abbr: 'p', help: 'Encryption password');
+  parser.addCommand('decrypt')
+    ..addOption('file', abbr: 'f', help: 'File to decrypt')
+    ..addOption('password', abbr: 'p', help: 'Decryption password');
 
-  switch (command) {
+  final results = parser.parse(args);
+  if (results.command == null) {
+    print('Usage: secretkey <generate|encrypt|decrypt> ...');
+    exit(0);
+  }
+
+  switch (results.command!.name) {
     case "generate":
-      if (args.length < 3) {
+      final key = results.command!['key'];
+      final function = results.command!['function'];
+
+      if (key == null || function == null) {
         print("Usage: secret generate <PLAINTEXT_KEY|FILE_PATH> <functionName>");
         exit(1);
       }
-      Obfuscator.generate(args);
+
+      Obfuscator.generate(key, function);
       break;
 
     case "encrypt":
-      if (args.length < 3) {
+      final pathFile = results.command!['file'];
+      final password = results.command!['password'];
+      if (pathFile == null || password == null) {
         print("Usage: secret encrypt <file-path> <password>");
         exit(1);
       }
-      await EncryptDecrypt.encryptFile(args);
+      await EncryptDecrypt.encryptFile(pathFile, password);
       break;
 
     case "decrypt":
-      if (args.length < 3) {
-        print("Usage: secret decrypt <file-path> <password>");
+      final pathFile = results.command!['file'];
+      final password = results.command!['password'];
+      if (pathFile == null || password == null) {
+        print("Usage: secret encrypt <file-path> <password>");
         exit(1);
       }
-      await EncryptDecrypt.decryptFile(args);
+      await EncryptDecrypt.decryptFile(pathFile, password);
       break;
 
     default:

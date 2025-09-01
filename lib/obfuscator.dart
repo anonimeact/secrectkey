@@ -2,19 +2,16 @@ import 'dart:convert';
 import 'dart:io';
 
 class Obfuscator {
-  
+
   /// Generate an obfuscated key function and append it to lib/secret.dart.
   /// If lib/secret.dart does not exist, create a skeleton class.
   /// The generated function will return the original key when called.
   /// The key can be provided as a plaintext string or read from a file.
   /// The obfuscation is done using a simple XOR with a fixed mask.
 
-  static void generate(List<String> args) {
-    final input = args[1];
-    final functionName = args[2];
-
+  static void generate(String input, String functionName) {
+    // Baca key dari input (inline atau file)
     String key;
-
     // Kalau input adalah file yang ada, baca persis isinya (multiline supported)
     final file = File(input);
     if (file.existsSync()) {
@@ -65,7 +62,7 @@ class Obfuscator {
 
     // Append ke class SecretKey
     var content = secretFile.readAsStringSync();
-    content = content.replaceFirst("}", "$method}");
+    content = content.replaceFirst("}", "}$method");
     secretFile.writeAsStringSync(content);
 
     print("✅ Added function $functionName() to lib/secret.dart");
