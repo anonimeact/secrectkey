@@ -8,7 +8,6 @@ Designed to prevent plain-text secrets from being exposed when the app is decomp
 ```bash
 dart pub global activate secret_key_scrypt_generator
 ```
-
 ---
 
 ## ✨ Features
@@ -22,7 +21,10 @@ dart pub global activate secret_key_scrypt_generator
   Encrypt a file into `_enc.txt`.
 - `secret decryptFile -f <path-file> -p <password>`  
   Decrypt an encrypted file back into `_dec.txt`.
-
-	> Password used length must be 32 character
-  > You can use any AESMode to do encrypt decrypt the string (eg: CBC, CFB-64, CTR, ECB, OFB-64/GCTR, OFB-64, SIC, GCM)
 ---
+
+# )* Note
+
+> Password used length must be 32 character
+
+> You can use any AESMode to do encrypt decrypt the string (eg: CBC, CFB-64, CTR, ECB, OFB-64/GCTR, OFB-64, SIC, GCM)
