@@ -1,8 +1,63 @@
 import 'dart:io';
 
-import 'package:secure_compressor/secure_compressor.dart';
+import 'package:encrypt/encrypt.dart' as encriptor;
 
 class EncryptDecrypt {
+  /// Encrypts the given [data] using AES encryption with the provided [keyString].
+  ///
+  /// The [keyString] must be 32 characters long. The optional [ivString] must be 32 characters long.
+  /// If [ivString] is not provided, a part of [keyString] will be used as the initialization vector (IV).
+  ///
+  /// Returns a Base64 encoded string of the encrypted data.
+  ///
+  /// Throws an [ArgumentError] if [keyString] is not 32 characters long.
+  static String _encrypt(
+    String data,
+    String keyString, {
+    String? ivString,
+    encriptor.AESMode mode = encriptor.AESMode.sic,
+  }) {
+    if (data.isEmpty) {
+      return '';
+    } else if (keyString.length < 32) {
+      return 'keyString length must be 32 characters.';
+    }
+    final key = encriptor.Key.fromUtf8(keyString);
+    final iv = encriptor.IV.fromUtf8(ivString ?? keyString.substring(0, 16));
+    final encrypter = encriptor.Encrypter(encriptor.AES(key, mode: mode));
+    final encryptedData = encrypter.encrypt(data, iv: iv);
+    return encryptedData.base64;
+  }
+
+  /// Decrypts the given [data] using AES encryption with the provided [keyString].
+  ///
+  /// The [keyString] must be 32 characters long. The optional [ivString] must be 32 characters long.
+  /// If [ivString] is not provided, a part of [keyString] will be used as the initialization vector (IV).
+  ///
+  /// Returns the decrypted data as a string.
+  ///
+  /// Throws an [ArgumentError] if [keyString] is not 32 characters long.
+  static String _decrypt(
+    String data,
+    String keyString, {
+    String? ivString,
+    encriptor.AESMode mode = encriptor.AESMode.sic,
+  }) {
+    if (data.isEmpty) {
+      return '';
+    } else if (keyString.length < 32) {
+      return 'keyString long must be 32 characters.';
+    }
+    final key = encriptor.Key.fromUtf8(keyString);
+    final iv = encriptor.IV.fromUtf8(ivString ?? keyString.substring(0, 16));
+    final encrypter = encriptor.Encrypter(encriptor.AES(key, mode: mode));
+    try {
+      return encrypter.decrypt64(data, iv: iv);
+    } catch (_) {
+      return '::: Error decrypting data';
+    }
+  }
+
   /// Encrypt the file at args[1] using the password at args[2].
   /// The encrypted content is saved to a new file with _enc suffix.
   /// The original file remains unchanged.
@@ -16,7 +71,7 @@ class EncryptDecrypt {
     }
 
     final data = await file.readAsString();
-    final encrypted = SecureCompressor.encrypt(data, password);
+    final encrypted = _encrypt(data, password);
     final filename = path.split(Platform.pathSeparator).last;
     final extIndex = filename.lastIndexOf(".");
     final base = extIndex == -1 ? filename : filename.substring(0, extIndex);
@@ -42,7 +97,7 @@ class EncryptDecrypt {
 
     final encrypted = await file.readAsString();
     try {
-      final decrypted = SecureCompressor.decrypt(encrypted, password);
+      final decrypted = _decrypt(encrypted, password);
       // Ambil nama file tanpa ekstensi
       final filename = path.split(Platform.pathSeparator).last;
       final base = filename.contains(".") ? filename.substring(0, filename.lastIndexOf(".")) : filename;
