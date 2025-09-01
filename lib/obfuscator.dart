@@ -51,7 +51,7 @@ class SecretKey {
     final method =
         """
 
-  static String $functionName() async {
+  static String $functionName() {
     const chunks = <List<int>>${jsonEncode(chunks)};
     final flat = chunks.expand((e) => e).map((b) => b ^ _mask).toList();
     return utf8.decode(flat);
@@ -61,13 +61,13 @@ class SecretKey {
     // Append to SecretKey class
     var content = secretFile.readAsStringSync();
 
-    // Cek kalau method sudah ada
-    if (content.contains("static Future<String> $functionName()")) {
-      print("⚠️ Function $functionName() already exists in lib/secret.dart. Aborting.");
+    // Check if function exist
+    if (content.contains("static String $functionName()")) {
+      print("⚠️ Function $functionName() already exists in secretkey.dart. Aborting.");
       return;
     }
 
-    // Tambahkan method **sebelum kurung kurawal penutup class**
+    // add new method
     final classEndIndex = content.lastIndexOf("}");
     if (classEndIndex == -1) {
       throw Exception("Cannot find closing brace for SecretKey class.");
@@ -77,6 +77,6 @@ class SecretKey {
 
     secretFile.writeAsStringSync(content);
 
-    print("✅ Added function $functionName() to lib/secret.dart");
+    print("✅ New obfuscated function $functionName() created in secretkey.dart (ROOT)");
   }
 }

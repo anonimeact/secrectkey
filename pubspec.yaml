@@ -1,7 +1,7 @@
 name: secret_key_scrypt_generator
 description: A Dart CLI to obfuscate a secret key and generate a Dart file that
   can safely reconstruct it at runtime.
-version: 1.0.1
+version: 1.0.2
 homepage: https://github.com/anonimeact/secrectkey
 repository: https://github.com/anonimeact/secrectkey
 environment:
