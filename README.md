@@ -28,3 +28,5 @@ dart pub global activate secret_key_scrypt_generator
 > Password used length must be 32 character
 
 > You can use any AESMode to do encrypt decrypt the string (eg: CBC, CFB-64, CTR, ECB, OFB-64/GCTR, OFB-64, SIC, GCM)
+
+> Use single quote if you using some character that detect by action in shell (eg: !). Use secretkey generate -s 'Hello!' -f ......

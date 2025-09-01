@@ -7,3 +7,7 @@
 
 ## 1.0.2
 - Optimize Obfuscator class
+
+## 1.0.3
+- Trim password to 32 char length if key ore than 32 char
+- Add note single quote usage in README.md
