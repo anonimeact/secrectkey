@@ -8,3 +8,6 @@
 
 ## 0.0.3
 - Add encrypt decrypt for single string with specific password
+
+## 0.0.4
+- Update README.md

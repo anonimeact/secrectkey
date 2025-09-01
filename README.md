@@ -7,6 +7,7 @@ Designed to prevent plain-text secrets from being exposed when the app is decomp
 ### Activate globally
 ```bash
 dart pub global activate secret_key_scrypt_generator
+```
 
 ---
 
