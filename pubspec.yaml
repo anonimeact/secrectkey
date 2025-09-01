@@ -11,7 +11,7 @@ dependencies:
   secure_compressor: ^1.0.10
 # path: ^1.8.0
 executables:
-  secretkey: secret_key_generator
+  secretkey: secret_key_scrypt_generator
 
 dev_dependencies:
   lints: ^5.0.0
