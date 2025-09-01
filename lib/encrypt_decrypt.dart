@@ -11,7 +11,7 @@ class EncryptDecrypt {
   /// Returns a Base64 encoded string of the encrypted data.
   ///
   /// Throws an [ArgumentError] if [keyString] is not 32 characters long.
-  static String _encrypt(
+  static String encrypt(
     String data,
     String keyString, {
     String? ivString,
@@ -37,7 +37,7 @@ class EncryptDecrypt {
   /// Returns the decrypted data as a string.
   ///
   /// Throws an [ArgumentError] if [keyString] is not 32 characters long.
-  static String _decrypt(
+  static String decrypt(
     String data,
     String keyString, {
     String? ivString,
@@ -62,7 +62,7 @@ class EncryptDecrypt {
   /// The encrypted content is saved to a new file with _enc suffix.
   /// The original file remains unchanged.
   /// The encryption uses SecureCompressor from secure_compressor package.
-  /// The output file is named <original_name>_enc.txt in the current directory.
+  /// The output file is named ORIGINAL_NAME_enc.txt in the current directory.
   static Future<void> encryptFile(String path, String password) async {
     final file = File(path);
     if (!file.existsSync()) {
@@ -71,7 +71,7 @@ class EncryptDecrypt {
     }
 
     final data = await file.readAsString();
-    final encrypted = _encrypt(data, password);
+    final encrypted = encrypt(data, password);
     final filename = path.split(Platform.pathSeparator).last;
     final extIndex = filename.lastIndexOf(".");
     final base = extIndex == -1 ? filename : filename.substring(0, extIndex);
@@ -86,7 +86,7 @@ class EncryptDecrypt {
   /// The decrypted content is saved to a new file with _dec suffix.
   /// The original file remains unchanged.
   /// The decryption uses SecureCompressor from secure_compressor package.
-  /// The output file is named <original_name>_dec.txt in the current directory.
+  /// The output file is named ORIGINAL_NAME_dec.txt in the current directory.
 
   static Future<void> decryptFile(String path, String password) async {
     final file = File(path);
@@ -97,7 +97,7 @@ class EncryptDecrypt {
 
     final encrypted = await file.readAsString();
     try {
-      final decrypted = _decrypt(encrypted, password);
+      final decrypted = decrypt(encrypted, password);
       // Ambil nama file tanpa ekstensi
       final filename = path.split(Platform.pathSeparator).last;
       final base = filename.contains(".") ? filename.substring(0, filename.lastIndexOf(".")) : filename;

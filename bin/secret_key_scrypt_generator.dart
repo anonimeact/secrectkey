@@ -6,9 +6,11 @@ import 'package:secret_key_scrypt_generator/obfuscator.dart';
 
 /// A simple tool to generate obfuscated secret key functions and encrypt/decrypt files.
 /// Usage:
-///   secrect generate <PLAINTEXT_KEY|FILE_PATH> <functionName>
-///   secrect encrypt <file-path> <password>
-///   secrect decrypt <file-path> <password>
+/*
+   secrect generate <PLAINTEXT_KEY|FILE_PATH> <functionName>
+   secrect encrypt <file-path> <password>
+   secrect decrypt <file-path> <password>
+*/
 Future<void> main(List<String> args) async {
   if (args.isEmpty) {
     printUsage();
