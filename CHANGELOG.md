@@ -9,5 +9,5 @@
 ## 0.0.3
 - Add encrypt decrypt for single string with specific password
 
-## 0.0.4
+## 1.0.0
 - Update README.md
