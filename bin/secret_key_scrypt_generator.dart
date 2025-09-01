@@ -18,12 +18,18 @@ Future<void> main(List<String> args) async {
   }
   final parser = ArgParser();
   parser.addCommand('generate')
-    ..addOption('key', abbr: 'k', help: 'Obfuscate a secret key')
+    ..addOption('key', abbr: 's', help: 'Obfuscate a secret key')
     ..addOption('function', abbr: 'f', help: 'Function name to generate');
   parser.addCommand('encrypt')
-    ..addOption('file', abbr: 'f', help: 'File to encrypt')
+    ..addOption('key', abbr: 's', help: 'String to encrypt')
     ..addOption('password', abbr: 'p', help: 'Encryption password');
   parser.addCommand('decrypt')
+    ..addOption('key', abbr: 's', help: 'Encrypted string to decrypt')
+    ..addOption('password', abbr: 'p', help: 'Decryption password');
+  parser.addCommand('encryptFile')
+    ..addOption('file', abbr: 'f', help: 'File to encrypt')
+    ..addOption('password', abbr: 'p', help: 'Encryption password');
+  parser.addCommand('decryptFile')
     ..addOption('file', abbr: 'f', help: 'File to decrypt')
     ..addOption('password', abbr: 'p', help: 'Decryption password');
 
@@ -47,23 +53,45 @@ Future<void> main(List<String> args) async {
       break;
 
     case "encrypt":
-      final pathFile = results.command!['file'];
+      final pathFile = results.command!['key'];
       final password = results.command!['password'];
       if (pathFile == null || password == null) {
         print("Usage: secret encrypt <file-path> <password>");
         exit(1);
       }
-      await EncryptDecrypt.encryptFile(pathFile, password);
+      final encryptedString = EncryptDecrypt.encrypt(pathFile, password);
+      print("✅ Encrypted String -> $encryptedString");
       break;
 
     case "decrypt":
+      final pathFile = results.command!['key'];
+      final password = results.command!['password'];
+      if (pathFile == null || password == null) {
+        print("Usage: secret encrypt <file-path> <password>");
+        exit(1);
+      }
+      final decryptedString = EncryptDecrypt.decrypt(pathFile, password);
+      print("✅ Encrypted String -> $decryptedString");
+      break;
+
+    case "encryptFile":
       final pathFile = results.command!['file'];
       final password = results.command!['password'];
       if (pathFile == null || password == null) {
         print("Usage: secret encrypt <file-path> <password>");
         exit(1);
       }
-      await EncryptDecrypt.decryptFile(pathFile, password);
+      EncryptDecrypt.encryptFile(pathFile, password);
+      break;
+
+    case "decryptFile":
+      final pathFile = results.command!['file'];
+      final password = results.command!['password'];
+      if (pathFile == null || password == null) {
+        print("Usage: secret encrypt <file-path> <password>");
+        exit(1);
+      }
+      EncryptDecrypt.decryptFile(pathFile, password);
       break;
 
     default:

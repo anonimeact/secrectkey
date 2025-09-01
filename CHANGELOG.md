@@ -5,3 +5,6 @@
 ## 0.0.2
 - Migrate secure compressor to be own logic
 - Update README.md
+
+## 0.0.3
+- Add encrypt decrypt for single string with specific password
