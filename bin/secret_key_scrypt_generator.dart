@@ -1,9 +1,7 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:secret_key_scrypt_generator/encrypt_decrypt.dart';
 import 'package:secret_key_scrypt_generator/obfuscator.dart';
-import 'package:secure_compressor/secure_compressor.dart';
 
 /// A simple tool to generate obfuscated secret key functions and encrypt/decrypt files.
 /// Usage:
