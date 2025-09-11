@@ -11,15 +11,15 @@ dart pub global activate secret_key_scrypt_generator
 ---
 
 ## ✨ Features
-- `secret generate -s <string/key/secrect/plaintext> -f <functionName>`  
-  Generate an obfuscated Dart function from a string or file. This action will generate a SecrectKey class with unix functionName functions.
-- `secret encrypt -s <path-file> -p <password> -m <AESmode>`  
+- `secretkey generate -s <string/key/secret/plaintext> -f <functionName>`  
+  Generate an obfuscated Dart function from a string or file. This action will generate a SecretKey class with unix functionName functions.
+- `secretkey encrypt -s <path-file> -p <password> -m <AESmode>`  
   Encrypt a String with a specific password
-- `secret decrypt -s <path-file> -p <password> -m <AESmode>`  
+- `secretkey decrypt -s <path-file> -p <password> -m <AESmode>`  
   Decrypt a String with a specific password
-- `secret encryptFile -f <path-file> -p <password> -m <AESmode>`  
+- `secretkey encryptFile -f <path-file> -p <password> -m <AESmode>`  
   Encrypt a file into `_enc.txt`.
-- `secret decryptFile -f <path-file> -p <password> -m <AESmode>`  
+- `secretkey decryptFile -f <path-file> -p <password> -m <AESmode>`  
   Decrypt an encrypted file back into `_dec.txt`.
 ---
 

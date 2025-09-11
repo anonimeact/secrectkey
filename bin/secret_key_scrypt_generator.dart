@@ -113,7 +113,7 @@ Future<void> main(List<String> args) async {
 /// Global usage istruction
 void printUsage(ArgParser parser) {
   print('''
-Usage: secret <command> [options]
+Usage: secretkey <command> [options]
 
 Commands:
   generate     Generate obfuscated secret key clas and function
@@ -131,14 +131,14 @@ Common options:
 Global options:
 ${parser.usage}
 
-Run "secret <command> -h" for more information about a command.
+Run "secretkey <command> -h" for more information about a command.
 ''');
 }
 
 /// Per-command usage
 void printSubcommandUsage(ArgParser parser, String command) {
   print('''
-Usage: secret $command [options]
+Usage: secretkey $command [options]
 
 Options:
 ${parser.commands[command]!.usage}

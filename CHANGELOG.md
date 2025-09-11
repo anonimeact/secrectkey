@@ -15,3 +15,6 @@
 ## 1.0.4
 - Add help flag options
 - Add option AESmode for encryption commands
+
+## 1.0.5
+- Update documentations and README.md
