@@ -63,7 +63,11 @@ class EncryptDecrypt {
   /// The original file remains unchanged.
   /// The encryption uses SecureCompressor from secure_compressor package.
   /// The output file is named ORIGINAL_NAME_enc.txt in the current directory.
-  static Future<void> encryptFile(String path, String password) async {
+  static Future<void> encryptFile(
+    String path,
+    String password, {
+    encriptor.AESMode mode = encriptor.AESMode.sic,
+  }) async {
     final file = File(path);
     if (!file.existsSync()) {
       print("❌ File not found: $path");
@@ -71,7 +75,7 @@ class EncryptDecrypt {
     }
 
     final data = await file.readAsString();
-    final encrypted = encrypt(data, password);
+    final encrypted = encrypt(data, password, mode: mode);
     final filename = path.split(Platform.pathSeparator).last;
     final extIndex = filename.lastIndexOf(".");
     final base = extIndex == -1 ? filename : filename.substring(0, extIndex);
@@ -88,7 +92,11 @@ class EncryptDecrypt {
   /// The decryption uses SecureCompressor from secure_compressor package.
   /// The output file is named ORIGINAL_NAME_dec.txt in the current directory.
 
-  static Future<void> decryptFile(String path, String password) async {
+  static Future<void> decryptFile(
+    String path,
+    String password, {
+    encriptor.AESMode mode = encriptor.AESMode.sic,
+  }) async {
     final file = File(path);
     if (!file.existsSync()) {
       print("❌ File not found: $path");
@@ -97,7 +105,7 @@ class EncryptDecrypt {
 
     final encrypted = await file.readAsString();
     try {
-      final decrypted = decrypt(encrypted, password);
+      final decrypted = decrypt(encrypted, password, mode: mode);
       // Ambil nama file tanpa ekstensi
       final filename = path.split(Platform.pathSeparator).last;
       final base = filename.contains(".") ? filename.substring(0, filename.lastIndexOf(".")) : filename;
@@ -110,4 +118,32 @@ class EncryptDecrypt {
       print("❌ Wrong password or corrupted file.");
     }
   }
+
+  /// Parse string (case-insensitive) into AESMode enum using [modes]
+  static encriptor.AESMode parseAESMode(String? mode) {
+
+    /// Default enctypt will use sic mode is not using mode in CLI
+    if (mode == null) return encriptor.AESMode.sic; 
+
+    /// Search key based on value on map
+    try {
+      return modes.entries.firstWhere((entry) => entry.value.toLowerCase() == mode.toLowerCase()).key;
+    } catch (e) {
+      throw ArgumentError(
+        'Invalid AES mode "$mode". '
+        'Available: ${modes.values.join(", ")}',
+      );
+    }
+  }
+
+  static final Map<encriptor.AESMode, String> modes = {
+    encriptor.AESMode.cbc: 'CBC',
+    encriptor.AESMode.cfb64: 'CFB-64',
+    encriptor.AESMode.ctr: 'CTR',
+    encriptor.AESMode.ecb: 'ECB',
+    encriptor.AESMode.ofb64Gctr: 'OFB-64/GCTR',
+    encriptor.AESMode.ofb64: 'OFB-64',
+    encriptor.AESMode.sic: 'SIC',
+    encriptor.AESMode.gcm: 'GCM',
+  };
 }
